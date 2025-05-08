@@ -1,0 +1,126 @@
+[project]
+name = "repo-tools"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
+[tool.isort]
+profile = "black"
+
+[tool.black]
+line-length = 88
+
+[tool.mypy]
+disallow_untyped_defs = true
+ignore_missing_imports = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = false
+plugins = [
+    "dev/mypy/plugin/decorators.py",
+    "dev/mypy/plugin/outputs.py",
+]
+pretty = true
+show_error_codes = true
+disable_error_code = [
+    "annotation-unchecked",
+]
+strict = true
+
+[tool.coverage.xml]
+output = "test-reports/coverage.xml"
+
+[tool.coverage.html]
+directory = "test-reports/htmlcov"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = [
+    "./tests/unit_tests",
+]
+
+[tool.ruff]
+line-length = 88
+exclude = [
+    "tests",
+]
+lint.select = [
+    # Enable entire ruff rule section
+    "I", # Missing required import (auto-fixable)
+    "UP", # Pyupgrade
+    "ASYNC", # subset of flake8-async rules
+    "ISC",  # Checks for implicit literal string concatenation (auto-fixable)
+    "TCH", # Rules around TYPE_CHECKING blocks
+    "G", # flake8-logging-format rules
+    "LOG", # flake8-logging rules, most of them autofixable
+    "PT", # flake8-pytest-style rules
+    "TID25", # flake8-tidy-imports rules
+    "E", # pycodestyle rules
+    "W", # pycodestyle rules
+    "D", # pydocstyle rules
+    "D213",
+    "D402",
+    "D417",
+    # Per rule enables
+    "RUF006", # Checks for asyncio dangling task
+    "RUF015", # Checks for unnecessary iterable allocation for first element
+    "RUF019", # Checks for unnecessary key check
+    "RUF100", # Unused noqa (auto-fixable)
+    "PGH004",  # Use specific rule codes when using noqa
+    "PGH005", # Invalid unittest.mock.Mock methods/attributes/properties
+    "S101", # Checks use `assert` outside the test cases, test cases should be added into the exclusions
+    "B004", # Checks for use of hasattr(x, "__call__") and replaces it with callable(x)
+    "B006", # Checks for uses of mutable objects as function argument defaults.
+    "B007", # Checks for unused variables in the loop
+    "B017", # Checks for pytest.raises context managers that catch Exception or BaseException.
+    "B019", # Use of functools.lru_cache or functools.cache on methods can lead to memory leaks
+    "B028", # No explicit stacklevel keyword argument found
+    "TRY002", # Prohibit use of `raise Exception`, use specific exceptions instead.
+]
+lint.ignore = [
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+    "E731", # Do not assign a lambda expression, use a def
+    "TCH003", # Do not move imports from stdlib to TYPE_CHECKING block
+    "PT004", # Fixture does not return anything, add leading underscore
+    "PT005", # Fixture returns a value, remove leading underscore
+    "PT006", # Wrong type of names in @pytest.mark.parametrize
+    "PT007", # Wrong type of values in @pytest.mark.parametrize
+    "PT011", # pytest.raises() is too broad, set the match parameter
+    "PT019", # fixture without value is injected as parameter, use @pytest.mark.usefixtures instead
+    # Rules below explicitly set off which could overlap with Ruff's formatter
+    # as it recommended by https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+    # Except ISC rules
+    "W191",
+    "E111",
+    "E114",
+    "E117",
+    "Q000",
+    "Q001",
+    "Q002",
+    "Q003",
+    "COM812",
+    "COM819",
+    "E501", # Formatted code may exceed the line length, leading to line-too-long (E501) errors.
+    "ISC001",
+    "D100", # Missing docstring in public module
+    "D107", # Missing docstring in __init__
+    "D212",
+    "D415",
+    "D103",
+]
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint.pyupgrade]
+# Preserve types, even if a file imports `from __future__ import annotations`.
+keep-runtime-typing = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"**/unit_tests/*" = ["S101"] # allow asserts for tests
